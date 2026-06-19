@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 from sqlalchemy import Column, String, Integer, Boolean, DateTime, ForeignKey, Text
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import UUID, ARRAY
 from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
@@ -18,7 +18,7 @@ class User(Base):
 
     links = relationship("Link", back_populates="user")
     domains = relationship("Domain", back_populates="user")
-    api_keys = relationship("ApiKey", back_populates="user")
+    api_keys = relationship("APIKey", back_populates="user", cascade="all, delete-orphan")
     bulk_jobs = relationship("BulkJob", back_populates="user")
     subscriptions = relationship("Subscription", back_populates="user")
 
@@ -71,19 +71,6 @@ class DeepLink(Base):
 
     link = relationship("Link", back_populates="deep_link")
 
-class ApiKey(Base):
-    __tablename__ = "api_keys"
-
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
-    key_hash = Column(String, unique=True, nullable=False)
-    name = Column(String)
-    last_used_at = Column(DateTime(timezone=True))
-    is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime(timezone=True), default=datetime.utcnow)
-
-    user = relationship("User", back_populates="api_keys")
-
 class BulkJob(Base):
     __tablename__ = "bulk_jobs"
 
@@ -109,3 +96,19 @@ class Subscription(Base):
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow)
 
     user = relationship("User", back_populates="subscriptions")
+
+class APIKey(Base):
+    __tablename__ = "api_keys"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    name = Column(Text, nullable=False)
+    key_prefix = Column(Text, nullable=False)
+    key_hash = Column(Text, unique=True, nullable=False, index=True)
+    scopes = Column(ARRAY(Text), default=["read", "write"])
+    is_active = Column(Boolean, default=True)
+    last_used_at = Column(DateTime(timezone=True), nullable=True)
+    expires_at = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), default=datetime.utcnow)
+
+    user = relationship("User", back_populates="api_keys")

@@ -7,6 +7,7 @@ import redis.asyncio as redis
 
 from app.database import get_db, redis_client
 from app.models import Link
+from app.workers.tasks import record_click
 
 router = APIRouter()
 
@@ -44,11 +45,20 @@ async def redirect_slug(
     if not link_data["is_active"]:
         raise HTTPException(status_code=404, detail="Link is inactive")
         
-    # 4. Handle Analytics (mocked celery push for now)
+    # 4. Handle Analytics (push to celery worker)
     if link_data["has_analytics"]:
-        # TODO: push to celery worker
-        # record_click.delay(...)
-        pass
+        metadata = {
+            "ip": request.client.host,
+            "user_agent": request.headers.get("user-agent", ""),
+            "referrer": request.headers.get("referer", "")
+        }
+        # Call celery task asynchronously
+        record_click.delay(
+            link_id=link_data["link_id"],
+            slug=slug,
+            user_id="", # User ID of clicker not known unless authenticated
+            request_metadata=metadata
+        )
         
     # 5. Redirect
     return RedirectResponse(url=link_data["destination_url"], status_code=302)

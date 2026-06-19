@@ -5,7 +5,9 @@ asyncpg>=0.29.0
 alembic>=1.13.1
 redis>=5.0.4
 celery>=5.4.0
-clickhouse-driver>=0.2.7
+clickhouse-driver==0.2.10
+pyjwt==2.8.0
+cryptography==42.0.5
 nanoid>=2.0.0
 pydantic>=2.7.4
 pydantic-settings>=2.3.4
