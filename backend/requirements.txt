@@ -1,0 +1,15 @@
+fastapi[standard]>=0.111.0
+uvicorn>=0.30.1
+sqlalchemy>=2.0.30
+asyncpg>=0.29.0
+alembic>=1.13.1
+redis>=5.0.4
+celery>=5.4.0
+clickhouse-driver>=0.2.7
+nanoid>=2.0.0
+pydantic>=2.7.4
+pydantic-settings>=2.3.4
+qrcode>=7.4.2
+pillow>=10.3.0
+python-multipart>=0.0.9
+passlib[bcrypt]>=1.7.4
