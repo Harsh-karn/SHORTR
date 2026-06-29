@@ -1,6 +1,6 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/Harsh-karn/SHORTR/main/frontend/public/next.svg" width="120" alt="SHORTR Logo" />
-  <h1 align="center">SHORTR⚡</h1>
+  <h1 align="center">SHORTR ⚡</h1>
   <p align="center">
     <strong>A high-performance, developer-first URL shortener SaaS platform.</strong>
   </p>
