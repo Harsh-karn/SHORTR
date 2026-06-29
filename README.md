@@ -109,5 +109,5 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 <div align="center">
   <br />
-  <p>Built with ❤️ by Harsh Karn</p>
+  <p>Built with ❤️ by Harsh-Karn </p>
 </div>
