@@ -105,7 +105,7 @@ The FastAPI backend uses dual-authentication middleware. Requests to `/v1/*` are
 ---
 
 ## 🤝 Contributing
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please feel free to submit a Pull Request and make this app more useful.
 
 <div align="center">
   <br />
